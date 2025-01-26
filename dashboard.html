@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etalase Produk</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="dashboard2.css">
+    <script>
+        let cart = [];
+
+        function addToCart(productName, price) {
+            const productIndex = cart.findIndex(item => item.name === productName);
+            if (productIndex > -1) {
+                cart[productIndex].quantity += 1;
+                cart[productIndex].totalPrice += price;
+            } else {
+                cart.push({ name: productName, price: price, quantity: 1, totalPrice: price });
+            }
+            updateCartPanel();
+        }
+
+        function updateCartPanel() {
+            const cartPanel = document.getElementById("cart-panel");
+            cartPanel.innerHTML = "";
+
+            let totalQuantity = 0;
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                totalQuantity += item.quantity;
+                grandTotal += item.totalPrice;
+
+                const itemDiv = document.createElement("div");
+                itemDiv.textContent = `${item.name} - ${item.quantity} x Rp ${item.price.toLocaleString()} = Rp ${item.totalPrice.toLocaleString()}`;
+                cartPanel.appendChild(itemDiv);
+            });
+
+            const summaryDiv = document.createElement("div");
+            summaryDiv.innerHTML = `<strong>Total Barang: ${totalQuantity} | Total Harga: Rp ${grandTotal.toLocaleString()}</strong>`;
+            cartPanel.appendChild(summaryDiv);
+        }
+
+        function printReceipt() {
+            const name = prompt("Masukkan nama Anda:");
+            if (!name) return;
+
+            let receipt = `Struk Belanja\n\nNama Pembeli: ${name}\n\n`;
+
+            let totalQuantity = 0;
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                totalQuantity += item.quantity;
+                grandTotal += item.totalPrice;
+                receipt += `${item.name} - ${item.quantity} x Rp ${item.price.toLocaleString()} = Rp ${item.totalPrice.toLocaleString()}\n`;
+            });
+
+            receipt += `\nTotal Barang: ${totalQuantity}\nTotal Harga: Rp ${grandTotal.toLocaleString()}`;
+            alert(receipt);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Produk Kami</h1>
+        <nav>
+            <a href="keranjang.html">Keranjang</a>
+            <a href="login.html">Halaman Login</a>
+            <a href="kontak.html">Kontak</a>
+            <a href="bantuan.html">Bantuan</a>
+        </nav>
+    </header>
+    <main>
+        <div class="product-container">
+            <div class="product">
+                <img src="imagevideo source/Bagoray Ori.png" alt="Bagoray Ori">
+                <h2>Bagoray Ori</h2>
+                <p>Bagoray dengan Toping 1/2 telur, tahu bakso,dan gorengan</p>
+                <span class="price">Rp 10.000</span>
+                <button onclick="addToCart('Bagoray Ori', 10000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="product">
+                <img src="imagevideo source/Bagoray spesial.png" alt="Bagoray Spesial">
+                <h2>Bagoray Spesial</h2>
+                <p>Bagoray dengan Toping Telur, Pare, Tahu, Siomay, dan extra jeruk nipis serta kecap.</p>
+                <span class="price">Rp 15.000</span>
+                <button onclick="addToCart('Bagoray Spesial', 15000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="product">
+                <img src="imagevideo source/Es DoReMi.png" alt="Es DoReMi">
+                <h2>Es DoReMi</h2>
+                <p>Rasakan nikmat dan kesegaran dari Es DoReMi dengan 3 varian rasa yang membuat kamu ingin beli lagi.</p>
+                <span class="price">Rp 10.000</span>
+                <button onclick="addToCart('Es DoReMi', 10000)">Tambah ke Keranjang</button>
+            </div>
+        </div>
+        <div id="cart-panel" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;">
+            <h3>Panel Keranjang Belanja</h3>
+            <!-- Cart details will be dynamically added here -->
+        </div>
+        <button onclick="printReceipt()">Cetak Struk</button>
+    </main>
+    <footer>
+        <p>&copy; 2025 Etalase ASCE Food Fest. Semua hak dilindungi.</p>
+    </footer>
+</body>
+</html>
